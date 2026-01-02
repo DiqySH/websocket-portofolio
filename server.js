@@ -26,12 +26,6 @@ wss.on("connection", (ws) => {
         state: msg.state,
         facing: msg.facing,
       });
-      console.log(id, {
-        x: msg.x,
-        y: msg.y,
-        state: msg.state,
-        facing: msg.facing,
-      });
     }
 
     const payload = JSON.stringify({

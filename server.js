@@ -1,9 +1,16 @@
 import { WebSocketServer, WebSocket } from "ws";
 import crypto from "crypto";
+import https from "https";
+import fs from "fs";
 
-const PORT = process.env.PORT || 3000;
+const PORT = 443;
 
-const wss = new WebSocketServer({ port: PORT, host: "0.0.0.0" });
+const server = https.createServer({
+  cert: fs.readFileSync("/etc/letsencrypt/live/vps.diqy.my.id/fullchain.pem"),
+  key: fs.readFileSync("/etc/letsencrypt/live/vps.diqy.my.id/privkey.pem"),
+});
+
+const wss = new WebSocketServer({ server });
 
 const players = new Map();
 
@@ -53,4 +60,6 @@ wss.on("connection", (ws) => {
   });
 });
 
-console.log("WebSocket running on port", PORT);
+server.listen(PORT, () => {
+  console.log(`WSS server running on port ${PORT}`);
+});

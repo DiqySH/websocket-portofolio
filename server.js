@@ -17,33 +17,40 @@ wss.on("connection", (ws) => {
   ws.send(JSON.stringify({ type: "welcome", id }));
 
   ws.on("message", (data) => {
-    const msg = JSON.parse(data);
+    try {
+      const msg = JSON.parse(data.toString());
 
-    if (msg.type === "move") {
-      players.set(id, {
-        x: msg.x,
-        y: msg.y,
-        state: msg.state,
-        facing: msg.facing,
+      if (msg.type === "move") {
+        players.set(id, {
+          x: msg.x,
+          y: msg.y,
+          state: msg.state,
+          facing: msg.facing,
+        });
+      }
+
+      const payload = JSON.stringify({
+        type: "state",
+        players: Object.fromEntries(players),
       });
+
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) client.send(payload);
+      });
+    } catch (err) {
+      console.error("invalid json");
     }
-
-    const payload = JSON.stringify({
-      type: "state",
-      players: Object.fromEntries(players),
-    });
-
-    wss.clients.forEach((client) => {
-      if (client.readyState === 1) client.send(payload);
-    });
   });
 
   ws.on("close", () => {
     players.delete(id);
 
     const payload = JSON.stringify({ type: "remove", id });
+
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) client.send(payload);
     });
   });
 });
+
+console.log("WebSocket running on port", PORT);

@@ -8,7 +8,7 @@ const wss = new WebSocketServer({ port: PORT, host: "0.0.0.0" });
 const players = new Map();
 
 wss.on("connection", (ws) => {
-  const id = crypto.randomUUID();
+  const id = crypto.randomBytes(16).toString("hex");
   players.set(id, { x: 0, y: 0 });
 
   console.log("player connected:", id);

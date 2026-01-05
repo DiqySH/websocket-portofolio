@@ -1,4 +1,4 @@
-import { WebSocketServer } from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 import crypto from "crypto";
 
 const PORT = process.env.PORT || 3000;
@@ -47,5 +47,3 @@ wss.on("connection", (ws) => {
     });
   });
 });
-
-console.log("WebSocket server running on ws://localhost:8080");

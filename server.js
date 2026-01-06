@@ -18,7 +18,7 @@ wss.on("connection", (ws) => {
   const id = crypto.randomBytes(16).toString("hex");
   players.set(id, { x: 0, y: 0 });
 
-  console.log("player connected:", id);
+  console.log("player connected:", id, " - ", new Date().toString());
   console.log("total players:", players.size);
 
   ws.send(JSON.stringify({ type: "welcome", id }));

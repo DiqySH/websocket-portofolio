@@ -17,15 +17,21 @@ const players = new Map();
 wss.on("connection", (ws) => {
   const id = crypto.randomBytes(16).toString("hex");
   players.set(id, { x: 0, y: 0 });
+  const seconds = String(new Date().getSeconds()).padStart(2, "0");
+  const minutes = String(new Date().getMinutes()).padStart(2, "0");
+  const hours = String(new Date().getHours()).padStart(2, "0");
 
   console.log(
-    "[LOG] == ",
+    `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
     "Player connected:",
     id,
-    " - ",
-    new Date().toString()
   );
-  console.log("[LOG] == ", "Total players:", players.size);
+
+  console.log(
+    `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
+    "Total players:",
+    players.size
+  );
 
   ws.send(JSON.stringify({ type: "welcome", id }));
 

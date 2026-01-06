@@ -24,7 +24,7 @@ wss.on("connection", (ws) => {
   console.log(
     `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
     "Player connected:",
-    id,
+    id
   );
 
   console.log(
@@ -69,6 +69,18 @@ wss.on("connection", (ws) => {
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) client.send(payload);
     });
+
+    console.log(
+      `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
+      "Player disconnected:",
+      id
+    );
+
+    console.log(
+      `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
+      "Total players:",
+      players.size
+    );
   });
 });
 

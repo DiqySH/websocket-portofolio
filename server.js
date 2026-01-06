@@ -62,6 +62,10 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("close", () => {
+    const closeSeconds = String(new Date().getSeconds()).padStart(2, "0");
+    const closeMinutes = String(new Date().getMinutes()).padStart(2, "0");
+    const closeHours = String(new Date().getHours()).padStart(2, "0");
+
     players.delete(id);
 
     const payload = JSON.stringify({ type: "remove", id });
@@ -71,13 +75,13 @@ wss.on("connection", (ws) => {
     });
 
     console.log(
-      `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
+      `[LOG - ${closeHours + ":" + closeMinutes + ":" + closeSeconds}] `,
       "Player disconnected:",
       id
     );
 
     console.log(
-      `[LOG - ${hours + ":" + minutes + ":" + seconds}] `,
+      `[LOG - ${closeHours + ":" + closeMinutes + ":" + closeSeconds}] `,
       "Total players:",
       players.size
     );
